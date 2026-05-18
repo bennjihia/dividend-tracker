@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NSE Kenya Dividend Calendar 2026 · Afrivest</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800;900&family=Outfit:wght@300;400;500;600;700;800&family=DM+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#141c2e;--red:#c8222e;--gold:#c47b0a;--gold2:#f5a623;
+  --green:#0a6e5e;--green2:#00c896;--cream:#f2ece0;
+  --s2:#faf7f2;--s3:#f0ebe1;--b1:rgba(20,28,46,.1);--b2:rgba(20,28,46,.06);
+  --text:#1a1610;--muted:#7a6e5a;--dim:#b8b0a0;
+  --fd:'Playfair Display',serif;--fu:'Outfit',sans-serif;--fm:'DM Mono',monospace;
+  --r:12px;--r2:8px;--sh:0 2px 16px rgba(20,28,46,.07);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--fu);background:var(--cream);color:var(--text);min-height:100vh}
+.hdr{background:linear-gradient(145deg,#0c1526,var(--navy),#1a2540);padding:28px 32px 24px;position:relative;overflow:hidden}
+.hdr::after{content:'';position:absolute;bottom:-60px;right:-60px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(200,34,46,.12),transparent 65%);pointer-events:none}
+.h-top{display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:16px;position:relative;z-index:1}
+.h-afr{font-size:10px;font-weight:800;color:var(--red);letter-spacing:.25em;text-transform:uppercase;display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.h-afr::before{content:'';width:18px;height:2px;background:var(--red)}
+.h-title{font-family:var(--fd);font-size:38px;font-weight:900;color:#fff;line-height:1.05}
+.h-sub{font-size:11px;color:rgba(255,255,255,.38);letter-spacing:.12em;text-transform:uppercase;margin-top:6px}
+.h-meta{display:flex;flex-direction:column;align-items:flex-end;gap:7px}
+.h-live{background:rgba(0,200,150,.15);border:1px solid rgba(0,200,150,.3);border-radius:20px;padding:5px 14px;display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:#00e599;font-family:var(--fm)}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#00e599;animation:pulse 2s infinite}
+.h-note{font-size:9px;color:rgba(255,255,255,.2)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.sumstrip{background:#fff;border-bottom:2px solid var(--b1);padding:14px 32px;display:flex;gap:0;overflow-x:auto}
+.ss{flex:1;min-width:120px;text-align:center;padding:0 16px;border-right:1px solid var(--b2)}
+.ss:last-child{border-right:none}
+.ss-l{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;margin-bottom:6px}
+.ss-v{font-family:var(--fd);font-size:24px;font-weight:900;color:var(--navy);line-height:1}
+.ss-s{font-size:10px;color:var(--muted);margin-top:3px;font-family:var(--fm)}
+.red{color:var(--red)}.green{color:var(--green)}.gold{color:var(--gold)}
+
+.next-banner{background:rgba(200,34,46,.06);border:1.5px solid rgba(200,34,46,.2);border-radius:var(--r2);margin:16px 32px 0;padding:12px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.nb-text{flex:1}
+.nb-title{font-size:13px;font-weight:700;color:var(--red)}
+.nb-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.mini-cd{display:flex;gap:6px;flex-shrink:0}
+.mcd{display:flex;flex-direction:column;align-items:center;background:rgba(200,34,46,.1);border:1px solid rgba(200,34,46,.2);border-radius:6px;padding:4px 8px;min-width:38px}
+.mcd-n{font-size:16px;font-weight:800;color:var(--red);line-height:1;font-family:var(--fm)}
+.mcd-l{font-size:7px;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-top:2px}
+
+.calc-panel{background:linear-gradient(135deg,var(--navy),#1a2540);margin:12px 32px 0;border-radius:var(--r);padding:18px 22px;display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.cp-icon{font-size:28px;flex-shrink:0}
+.cp-text{flex:1}
+.cp-title{font-family:var(--fd);font-size:17px;font-weight:800;color:#fff;margin-bottom:2px}
+.cp-sub{font-size:11px;color:rgba(255,255,255,.4)}
+.cp-total{text-align:right}
+.cp-total-l{font-size:9px;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:4px}
+.cp-total-v{font-family:var(--fd);font-size:26px;font-weight:900;color:var(--gold2)}
+.cp-total-s{font-size:10px;color:rgba(255,255,255,.3);margin-top:2px;font-family:var(--fm)}
+.cp-btn{background:rgba(200,34,46,.7);color:#fff;border:none;border-radius:var(--r2);padding:7px 16px;font-family:var(--fu);font-size:12px;font-weight:700;cursor:pointer;transition:background .15s;flex-shrink:0}
+.cp-btn:hover{background:var(--red)}
+
+.ctrl{background:var(--s2);border-bottom:1px solid var(--b1);padding:12px 32px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:12px}
+.ftabs{display:flex;gap:4px;flex-wrap:wrap}
+.ftab{font-size:10px;font-weight:700;padding:5px 12px;border-radius:20px;cursor:pointer;border:1px solid var(--b1);background:none;color:var(--muted);font-family:var(--fu);transition:all .14s}
+.ftab.on{background:rgba(200,34,46,.09);color:var(--red);border-color:rgba(200,34,46,.3)}
+.ctrl-right{display:flex;gap:8px;margin-left:auto;flex-wrap:wrap;align-items:center}
+.sort-sel,.search-box{font-size:11px;font-family:var(--fu);background:#fff;border:1px solid var(--b1);border-radius:var(--r2);padding:6px 10px;color:var(--text)}
+.search-box{width:180px}
+.search-box::placeholder{color:var(--dim)}
+.search-box:focus,.sort-sel:focus{outline:none;border-color:rgba(200,34,46,.4)}
+
+.grid-wrap{padding:12px 32px 32px}
+.sh-row{display:flex;align-items:center;gap:12px;margin-top:16px;margin-bottom:10px}
+.sh-line{flex:1;height:1px;background:var(--b1)}
+.sh-label{font-size:9px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.14em;white-space:nowrap;flex-shrink:0}
+.sh-count{font-size:9px;font-weight:700;color:var(--muted);background:var(--s3);border-radius:10px;padding:2px 8px;flex-shrink:0}
+
+.div-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:12px}
+.dc{background:#fff;border:1px solid var(--b1);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);transition:transform .15s,box-shadow .15s;position:relative}
+.dc:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(20,28,46,.1)}
+.dc.paid{opacity:.75}
+.dc.imminent{border-color:rgba(200,34,46,.3);box-shadow:0 2px 14px rgba(200,34,46,.08)}
+.dc.pending{border-color:rgba(196,123,10,.3)}
+.dc-bar{height:3px}
+.dc-bar.interim{background:linear-gradient(90deg,var(--gold2),transparent)}
+.dc-bar.final{background:linear-gradient(90deg,var(--navy),transparent)}
+.dc-bar.special{background:linear-gradient(90deg,#8a2be2,transparent)}
+.dc-bar.paid-bar{background:linear-gradient(90deg,var(--green),transparent)}
+.dc-body{padding:14px 16px}
+.dc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.dc-co{font-family:var(--fd);font-size:15px;font-weight:800;color:var(--navy);line-height:1.2}
+.dc-ticker{font-family:var(--fm);font-size:10px;color:var(--muted);margin-top:2px}
+.dc-badges{display:flex;flex-direction:column;align-items:flex-end;gap:4px}
+.badge{display:inline-flex;align-items:center;font-size:9px;font-weight:800;padding:3px 8px;border-radius:4px;letter-spacing:.05em;text-transform:uppercase}
+.b-i{background:rgba(196,123,10,.12);color:var(--gold);border:1px solid rgba(196,123,10,.25)}
+.b-f{background:rgba(20,28,46,.08);color:var(--navy);border:1px solid rgba(20,28,46,.18)}
+.b-sp{background:rgba(138,43,226,.1);color:#6a0dad;border:1px solid rgba(138,43,226,.2)}
+.sb{display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:800;padding:3px 9px;border-radius:10px;letter-spacing:.05em}
+.s-paid{background:rgba(10,110,94,.08);color:var(--green);border:1px solid rgba(10,110,94,.2)}
+.s-imm{background:rgba(200,34,46,.1);color:var(--red);border:1px solid rgba(200,34,46,.25)}
+.s-up{background:rgba(20,28,46,.06);color:var(--navy);border:1px solid rgba(20,28,46,.15)}
+.s-pen{background:rgba(196,123,10,.1);color:var(--gold);border:1px solid rgba(196,123,10,.25)}
+.dc-amt-row{display:flex;align-items:flex-end;gap:8px;margin-bottom:10px}
+.dc-amt{font-family:var(--fd);font-size:28px;font-weight:900;color:var(--navy);line-height:1}
+.dc-cur{font-family:var(--fm);font-size:11px;color:var(--muted);margin-bottom:4px}
+.dc-yld{font-family:var(--fm);font-size:11px;font-weight:600;color:var(--green);background:rgba(10,110,94,.08);border-radius:4px;padding:2px 7px;margin-bottom:4px}
+
+/* 3-column date grid */
+.dc-dates{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
+.dc-date{background:var(--s2);border-radius:var(--r2);padding:7px 8px}
+.dc-date-l{font-size:8px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px}
+.dc-date-v{font-family:var(--fm);font-size:11px;font-weight:600;color:var(--navy);line-height:1.3}
+.dc-date-v.rv{color:var(--red);font-weight:700}
+.dc-date-v.gv{color:var(--green)}
+.dc-date-v.ov{color:var(--gold)}
+.dc-date-v.dim{color:var(--dim);font-size:10px}
+
+.dc-cd{text-align:center;background:rgba(20,28,46,.04);border-radius:var(--r2);padding:5px 10px;font-family:var(--fm);font-size:11px;font-weight:700;color:var(--muted);margin-bottom:6px}
+.dc-cd.rv{background:rgba(200,34,46,.06);color:var(--red)}
+.dc-cd.gv{background:rgba(10,110,94,.06);color:var(--green)}
+.dc-elig{text-align:center;font-size:9px;color:var(--muted);margin-top:-4px;margin-bottom:6px;font-family:var(--fm)}
+.dc-elig.gv{color:var(--green)}
+.dc-elig.rv{color:var(--red)}
+
+.dc-calc{display:flex;align-items:center;gap:8px;border-top:1px solid var(--b2);padding-top:10px}
+.dc-calc-l{font-size:10px;font-weight:700;color:var(--muted);flex-shrink:0}
+.sh-inp{flex:1;background:rgba(200,34,46,.04);border:1px solid rgba(200,34,46,.15);border-radius:6px;padding:5px 8px;font-family:var(--fm);font-size:12px;color:var(--text);text-align:right;transition:all .18s;min-width:0}
+.sh-inp:focus{outline:none;border-color:var(--red);background:rgba(200,34,46,.07)}
+.dc-inc{font-family:var(--fm);font-size:13px;font-weight:700;color:var(--green);min-width:85px;text-align:right;white-space:nowrap}
+.paid-ribbon{position:absolute;top:10px;left:-24px;background:var(--green);color:#fff;font-size:8px;font-weight:800;padding:3px 28px;transform:rotate(-45deg);letter-spacing:.1em}
+
+.toast{position:fixed;bottom:20px;right:20px;background:var(--navy);color:#fff;padding:10px 18px;border-radius:var(--r2);font-size:12px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.25);border-left:3px solid var(--red);display:none}
+
+@media(max-width:768px){
+  .hdr,.ctrl,.grid-wrap,.sumstrip,.calc-panel,.next-banner{padding-left:14px;padding-right:14px}
+  .h-title{font-size:26px}.div-grid{grid-template-columns:1fr}
+  .search-box{width:140px}.ctrl{gap:6px}
+}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="h-top">
+    <div>
+      <div class="h-afr">Afrivest Consulting</div>
+      <div class="h-title">NSE Dividend<br>Calendar 2026</div>
+      <div class="h-sub">Nairobi Securities Exchange · Kenya · Interactive Dividend Tracker</div>
+    </div>
+    <div class="h-meta">
+      <div class="h-live"><div class="live-dot"></div><span id="clock">--:--:-- EAT</span></div>
+      <div style="font-size:10px;color:rgba(255,255,255,.35);font-family:var(--fm)" id="h-date">Mon 18 May 2026</div>
+      <div class="h-note">Source: NSE filings · CDSC · myStocks · Company announcements</div>
+      <div class="h-note">Ex-div = Books Close − 2 business days (NSE T+2 settlement)</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUMMARY -->
+<div class="sumstrip">
+  <div class="ss"><div class="ss-l">Companies</div><div class="ss-v" id="s-cos">26</div><div class="ss-s">Paying dividends 2026</div></div>
+  <div class="ss"><div class="ss-l">Upcoming Payments</div><div class="ss-v green" id="s-up">—</div><div class="ss-s">From today onward</div></div>
+  <div class="ss"><div class="ss-l">Ex-Dates Passed</div><div class="ss-v gold" id="s-ex">—</div><div class="ss-s">You may be eligible</div></div>
+  <div class="ss"><div class="ss-l">Next Payment</div><div class="ss-v red" id="s-next">—</div><div class="ss-s" id="s-next-d">—</div></div>
+  <div class="ss"><div class="ss-l">Highest Dividend</div><div class="ss-v gold">KES 60.00</div><div class="ss-s">BAT Kenya</div></div>
+  <div class="ss"><div class="ss-l">Your Income</div><div class="ss-v green" id="s-inc">KES 0</div><div class="ss-s">Enter shares below</div></div>
+</div>
+
+<!-- NEXT PAYMENT COUNTDOWN -->
+<div class="next-banner">
+  <span style="font-size:20px">⏰</span>
+  <div class="nb-text">
+    <div class="nb-title" id="nb-title">Next payment loading...</div>
+    <div class="nb-sub" id="nb-sub">—</div>
+  </div>
+  <div class="mini-cd">
+    <div class="mcd"><div class="mcd-n" id="cd-d">0</div><div class="mcd-l">Days</div></div>
+    <div class="mcd"><div class="mcd-n" id="cd-h">0</div><div class="mcd-l">Hrs</div></div>
+    <div class="mcd"><div class="mcd-n" id="cd-m">0</div><div class="mcd-l">Min</div></div>
+    <div class="mcd"><div class="mcd-n" id="cd-s">0</div><div class="mcd-l">Sec</div></div>
+  </div>
+</div>
+
+<!-- CALCULATOR -->
+<div class="calc-panel">
+  <div class="cp-icon">🧮</div>
+  <div class="cp-text">
+    <div class="cp-title">Dividend Income Calculator</div>
+    <div class="cp-sub">Enter your share count on any card · Total income updates instantly · Saved in your browser</div>
+  </div>
+  <div class="cp-total">
+    <div class="cp-total-l">Total Projected Income</div>
+    <div class="cp-total-v" id="total-inc">KES 0</div>
+    <div class="cp-total-s" id="total-inc-sub">Enter shares to calculate</div>
+  </div>
+  <button class="cp-btn" onclick="clearAll()">✕ Clear All</button>
+</div>
+
+<!-- CONTROLS -->
+<div class="ctrl">
+  <div class="ftabs">
+    <button class="ftab on" data-f="all" onclick="setFilter(this)">All</button>
+    <button class="ftab" data-f="upcoming" onclick="setFilter(this)">⏳ Upcoming</button>
+    <button class="ftab" data-f="imminent" onclick="setFilter(this)">🔴 Imminent</button>
+    <button class="ftab" data-f="eligible" onclick="setFilter(this)">✓ Eligible</button>
+    <button class="ftab" data-f="paid" onclick="setFilter(this)">✅ Paid</button>
+    <button class="ftab" data-f="interim" onclick="setFilter(this)">Interim</button>
+    <button class="ftab" data-f="final" onclick="setFilter(this)">Final</button>
+  </div>
+  <div class="ctrl-right">
+    <input class="search-box" type="text" placeholder="🔍 Search company / ticker..." oninput="render()">
+    <select class="sort-sel" onchange="render()">
+      <option value="pay">Sort: Payment Date</option>
+      <option value="ex">Sort: Ex-Div Date</option>
+      <option value="amt">Sort: Amount ↓</option>
+      <option value="yld">Sort: Yield ↓</option>
+      <option value="co">Sort: Company A–Z</option>
+    </select>
+  </div>
+</div>
+
+<div class="grid-wrap" id="gw"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════════════════
+   ROBUST DATE HELPER — avoids new Date('YYYY-MM-DD') UTC issues
+══════════════════════════════════════════════════════════════ */
+function mkDate(y,m,d){return new Date(y,m-1,d);}
+function parseD(s){if(!s)return null;const p=s.split('-').map(Number);return mkDate(p[0],p[1],p[2]);}
+function fmt(s){
+  const d=parseD(s);if(!d)return '—';
+  return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
+}
+const TODAY=mkDate(2026,5,18);
+
+/* ════════════════════════════════════════════════════════════
+   DATA — NSE Kenya 2026 Dividend Calendar
+   Source: NSE company filings · CDSC Kenya · myStocks.co.ke
+   Ex-div date = Books Close − 2 business days (T+2 settlement)
+══════════════════════════════════════════════════════════════ */
+const D=[
+  // ── INTERIM DIVIDENDS Q1 2026 (FULLY PAID) ──────────────────
+  {id:'kegn-i', tk:'KEGN', co:'KenGen',                       type:'interim', dps:0.90, price:9.20,  ex:'2026-01-27', bc:'2026-01-29', pay:'2026-02-12', curr:'KES', declared:'2025-10-29'},
+  {id:'eabl-i', tk:'EABL', co:'East African Breweries',       type:'interim', dps:4.00, price:245.50,ex:'2026-02-18', bc:'2026-02-20', pay:'2026-04-30', curr:'KES', declared:'2025-07-31'},
+  {id:'kplc-i', tk:'KPLC', co:'Kenya Power & Lighting',       type:'interim', dps:0.30, price:15.45, ex:'2026-02-19', bc:'2026-02-23', pay:'2026-03-27', curr:'KES', declared:'2025-10-29'},
+  {id:'scom-i', tk:'SCOM', co:'Safaricom PLC',                type:'interim', dps:0.85, price:30.45, ex:'2026-02-23', bc:'2026-02-25', pay:'2026-03-31', curr:'KES', declared:'2025-11-07'},
+
+  // ── FINAL DIVIDENDS 2026 (sorted by payment date) ───────────
+  {id:'imh-f',  tk:'IMH',  co:'I&M Holdings',                 type:'final',   dps:2.25, price:49.70, ex:'2026-04-14', bc:'2026-04-16', pay:'2026-05-21', curr:'KES', declared:'2026-03-20'},
+  {id:'kcb-f',  tk:'KCB',  co:'KCB Group',                    type:'final',   dps:3.00, price:66.75, ex:'2026-03-31', bc:'2026-04-02', pay:'2026-05-22', curr:'KES', declared:'2026-03-11'},
+  {id:'cic-f',  tk:'CIC',  co:'CIC Insurance Group',          type:'final',   dps:0.13, price:4.30,  ex:'2026-04-21', bc:'2026-04-23', pay:'2026-06-09', curr:'KES', declared:'2026-04-02'},
+  {id:'absa-f', tk:'ABSA', co:'ABSA Bank Kenya',              type:'final',   dps:1.85, price:28.60, ex:'2026-04-28', bc:'2026-04-30', pay:'2026-05-19', curr:'KES', declared:'2026-03-04'},
+  {id:'scbk-f', tk:'SCBK', co:'Standard Chartered Kenya',     type:'final',   dps:23.00,price:342.75,ex:'2026-04-28', bc:'2026-04-30', pay:'2026-05-21', curr:'KES', declared:'2026-03-18'},
+  {id:'ncba-f', tk:'NCBA', co:'NCBA Group PLC',               type:'final',   dps:4.60, price:88.25, ex:'2026-04-28', bc:'2026-04-30', pay:'2026-05-26', curr:'KES', declared:'2026-03-26'},
+  {id:'coop-f', tk:'COOP', co:'The Co-operative Bank',        type:'final',   dps:1.50, price:31.80, ex:'2026-04-28', bc:'2026-04-30', pay:'2026-06-30', curr:'KES', declared:'2026-03-19'},
+  {id:'bat-f',  tk:'BAT',  co:'BAT Kenya',                    type:'final',   dps:60.00,price:511.00,ex:'2026-05-06', bc:'2026-05-08', pay:'2026-06-12', curr:'KES', declared:'2026-02-27'},
+  {id:'bkg-f',  tk:'BKG',  co:'BK Group (Bank of Kigali)',    type:'final',   dps:41.84,price:54.25, ex:'2026-05-13', bc:'2026-05-15', pay:'2026-06-19', curr:'RWF', declared:'2026-02-25', note:'Dividend in Rwandan Franc'},
+  {id:'sbic-f', tk:'SBIC', co:'Stanbic Holdings',             type:'final',   dps:18.55,price:295.00,ex:'2026-05-15', bc:'2026-05-19', pay:'2026-05-30', curr:'KES', declared:'2026-03-11', pending:true},
+  {id:'nse-f',  tk:'NSEL', co:'Nairobi Securities Exchange',  type:'final',   dps:0.73, price:19.85, ex:'2026-05-19', bc:'2026-05-21', pay:'2026-07-31', curr:'KES', declared:'2026-04-02'},
+  {id:'nse-sp', tk:'NSEL', co:'Nairobi Securities Exchange',  type:'special', dps:0.27, price:19.85, ex:'2026-05-19', bc:'2026-05-21', pay:'2026-07-31', curr:'KES', declared:'2026-04-02'},
+  {id:'dtk-f',  tk:'DTK',  co:'Diamond Trust Bank Kenya',     type:'final',   dps:9.00, price:150.00,ex:'2026-05-20', bc:'2026-05-22', pay:'2026-06-26', curr:'KES', declared:'2026-03-24'},
+  {id:'eqty-f', tk:'EQTY', co:'Equity Group Holdings',        type:'final',   dps:5.75, price:75.25, ex:'2026-05-20', bc:'2026-05-22', pay:'2026-06-30', curr:'KES', declared:'2026-03-18'},
+  {id:'kukz-f', tk:'KUKZ', co:'Kakuzi PLC',                   type:'final',   dps:16.00,price:420.00,ex:'2026-05-27', bc:'2026-05-29', pay:'2026-06-15', curr:'KES', declared:'2026-03-25'},
+  {id:'boc-f',  tk:'BOC',  co:'BOC Kenya PLC',                type:'final',   dps:10.35,price:158.00,ex:'2026-05-28', bc:'2026-05-31', pay:'2026-07-21', curr:'KES', declared:'2026-04-30'},
+  {id:'tpse-f', tk:'TPSE', co:'TPS Eastern Africa (Serena)',  type:'final',   dps:0.35, price:15.20, ex:'2026-05-27', bc:'2026-05-29', pay:'2026-06-30', curr:'KES', declared:'2026-04-30'},
+  {id:'jub-f',  tk:'JUB',  co:'Jubilee Holdings',             type:'final',   dps:13.00,price:366.00,ex:'2026-06-09', bc:'2026-06-11', pay:'2026-07-24', curr:'KES', declared:'2026-04-17'},
+  {id:'lbty-f', tk:'LBTY', co:'Liberty Kenya Holdings',       type:'final',   dps:0.50, price:9.98,  ex:'2026-06-11', bc:'2026-06-15', pay:'2026-08-30', curr:'KES', declared:'2026-03-11'},
+  {id:'knre-f', tk:'KNRE', co:'Kenya Reinsurance Corp.',      type:'final',   dps:0.15, price:3.34,  ex:'2026-06-17', bc:'2026-06-19', pay:'2026-07-31', curr:'KES', declared:'2026-04-28'},
+  {id:'cgen-f', tk:'CGEN', co:'Car and General (K)',          type:'final',   dps:3.12, price:79.00, ex:'2026-06-22', bc:'2026-06-24', pay:'2026-06-30', curr:'KES', declared:'2026-04-17'},
+  {id:'totl-f', tk:'TOTL', co:'TotalEnergies Marketing Kenya',type:'final',   dps:3.45, price:45.50, ex:'2026-06-22', bc:'2026-06-24', pay:'2026-07-31', curr:'KES', declared:'2026-04-29'},
+  {id:'scom-f', tk:'SCOM', co:'Safaricom PLC',                type:'final',   dps:1.15, price:30.45, ex:'2026-07-31', bc:'2026-08-04', pay:'2026-09-04', curr:'KES', declared:'2026-05-09'},
+];
+
+/* ── Status ─────────────────────────────────────────────── */
+function status(d){
+  if(d.pending)return'pending';
+  const pay=parseD(d.pay);
+  if(pay<TODAY)return'paid';
+  const diff=(pay-TODAY)/86400000;
+  return diff<=7?'imminent':'upcoming';
+}
+
+/* ── Format helpers ─────────────────────────────────────── */
+const K=n=>isNaN(n)?'—':'KES '+Math.round(n).toLocaleString('en-KE');
+const daysTo=s=>{const d=parseD(s);return d?Math.ceil((d-TODAY)/86400000):999;};
+const yld=(d)=>d.curr==='KES'?((d.dps/d.price)*100).toFixed(2)+'%':'—';
+
+/* ── Shares storage ─────────────────────────────────────── */
+let SH={};
+try{SH=JSON.parse(localStorage.getItem('afv_div26')||'{}');}catch(e){}
+const saveSH=()=>{try{localStorage.setItem('afv_div26',JSON.stringify(SH));}catch(e){}};
+
+/* ── Filter state ───────────────────────────────────────── */
+let curF='all';
+function setFilter(b){document.querySelectorAll('.ftab').forEach(x=>x.classList.remove('on'));b.classList.add('on');curF=b.dataset.f;render();}
+
+/* ── Card HTML ──────────────────────────────────────────── */
+function card(d){
+  const st=status(d);
+  const exDate=parseD(d.ex);
+  const exPast=exDate&&exDate<TODAY;
+  const dtPay=daysTo(d.pay);
+  const dtEx=daysTo(d.ex);
+
+  // Status badge
+  const sBadge=st==='paid'?'<span class="sb s-paid">✓ Paid</span>'
+    :st==='imminent'?'<span class="sb s-imm">🔴 Imminent</span>'
+    :st==='pending'?'<span class="sb s-pen">⏳ Pending</span>'
+    :'<span class="sb s-up">📅 Upcoming</span>';
+
+  // Type badge
+  const tBadge=d.type==='interim'?'<span class="badge b-i">INTERIM</span>'
+    :d.type==='special'?'<span class="badge b-sp">SPECIAL</span>'
+    :'<span class="badge b-f">FINAL</span>';
+
+  // Bar colour
+  const barCls=st==='paid'?'paid-bar':d.type==='interim'?'interim':d.type==='special'?'special':'final';
+
+  // Ex-date colour
+  const exCls=exPast?'gv':dtEx<=3?'rv':dtEx<=14?'ov':'';
+
+  // Pay date colour
+  const payCls=st==='paid'?'gv':dtPay<=7?'rv':dtPay<=30?'ov':'';
+
+  // Countdown text
+  const cdText=st==='paid'?'✓ Payment made'
+    :d.pending?'Subject to AGM approval'
+    :dtPay===0?'Paying TODAY!'
+    :dtPay===1?'Paying TOMORROW'
+    :`${dtPay} days to payment`;
+  const cdCls=st==='paid'?'gv':dtPay<=7?'rv':'';
+
+  // Eligibility note
+  const eligText=exPast
+    ?'✓ Ex-date passed — eligible if registered before books close'
+    :dtEx<=0?'⚠ Ex-date is today — last day to buy'
+    :`Buy shares before ${fmt(d.ex)} to receive this dividend`;
+  const eligCls=exPast?'gv':dtEx<=1?'rv':'';
+
+  // Saved shares & income
+  const sh=parseFloat(SH[d.id])||0;
+  const inc=sh>0?sh*d.dps:0;
+  const incStr=inc>0?(d.curr==='KES'?K(inc):'RWF '+Math.round(inc).toLocaleString()):'\u2014';
+
+  return `<div class="dc ${st==='paid'?'paid':''} ${st==='imminent'?'imminent':''} ${st==='pending'?'pending':''}">
+    ${st==='paid'?'<div class="paid-ribbon">PAID</div>':''}
+    <div class="dc-bar ${barCls}"></div>
+    <div class="dc-body">
+      <div class="dc-top">
+        <div>
+          <div class="dc-co">${d.co}</div>
+          <div class="dc-ticker">${d.tk} · NSE Kenya${d.note?' · <em style="color:var(--muted)">'+d.note+'</em>':''}</div>
+        </div>
+        <div class="dc-badges">${tBadge}${sBadge}</div>
+      </div>
+      <div class="dc-amt-row">
+        <div class="dc-amt">${d.dps.toFixed(2)}</div>
+        <div class="dc-cur">${d.curr}/share</div>
+        ${d.curr==='KES'?`<div class="dc-yld">${yld(d)} yield</div>`:''}
+      </div>
+      <div class="dc-dates">
+        <div class="dc-date">
+          <div class="dc-date-l">Ex-Div Date</div>
+          <div class="dc-date-v ${exCls}">${fmt(d.ex)}</div>
+        </div>
+        <div class="dc-date">
+          <div class="dc-date-l">Books Close</div>
+          <div class="dc-date-v">${fmt(d.bc)}</div>
+        </div>
+        <div class="dc-date">
+          <div class="dc-date-l">Payment Date</div>
+          <div class="dc-date-v ${payCls}">${d.pending?'TBA (pending)':fmt(d.pay)}</div>
+        </div>
+      </div>
+      <div class="dc-cd ${cdCls}">${cdText}</div>
+      <div class="dc-elig ${eligCls}">${eligText}</div>
+      <div class="dc-calc">
+        <div class="dc-calc-l">My shares:</div>
+        <input class="sh-inp" type="number" data-id="${d.id}" placeholder="0" min="0" step="100" value="${sh||''}">
+        <div class="dc-inc" id="inc-${d.id}">${inc>0?incStr:'\u2014'}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+/* ── Render ─────────────────────────────────────────────── */
+function render(){
+  const q=(document.querySelector('.search-box')?.value||'').toLowerCase();
+  const s=document.querySelector('.sort-sel')?.value||'pay';
+
+  let data=D.filter(d=>{
+    const st=status(d);
+    if(curF==='upcoming'&&st==='paid')return false;
+    if(curF==='imminent'&&st!=='imminent')return false;
+    if(curF==='eligible'){const ep=parseD(d.ex)<TODAY;const np=st!=='paid';return ep&&np;}
+    if(curF==='paid'&&st!=='paid')return false;
+    if(curF==='interim'&&d.type!=='interim')return false;
+    if(curF==='final'&&d.type!=='final'&&d.type!=='special')return false;
+    if(q&&!d.co.toLowerCase().includes(q)&&!d.tk.toLowerCase().includes(q))return false;
+    return true;
+  });
+
+  data.sort((a,b)=>{
+    if(s==='amt')return b.dps-a.dps;
+    if(s==='yld')return(b.dps/b.price)-(a.dps/a.price);
+    if(s==='co')return a.co.localeCompare(b.co);
+    if(s==='ex')return(parseD(a.ex)||0)-(parseD(b.ex)||0);
+    return(parseD(a.pay)||0)-(parseD(b.pay)||0);
+  });
+
+  const gw=document.getElementById('gw');
+
+  if(curF==='all'&&!q){
+    const grps={imminent:[],pending:[],upcoming:[],paid:[]};
+    data.forEach(d=>{
+      const st=status(d);
+      if(st==='imminent')grps.imminent.push(d);
+      else if(d.pending)grps.pending.push(d);
+      else if(st==='upcoming')grps.upcoming.push(d);
+      else grps.paid.push(d);
+    });
+    let html='';
+    if(grps.imminent.length)html+=sh('🔴 Imminent — Payment within 7 days',grps.imminent.length)+`<div class="div-grid">${grps.imminent.map(card).join('')}</div>`;
+    if(grps.pending.length)html+=sh('⏳ Pending Board / AGM Approval',grps.pending.length)+`<div class="div-grid">${grps.pending.map(card).join('')}</div>`;
+    if(grps.upcoming.length)html+=sh('📅 Upcoming Payments',grps.upcoming.length)+`<div class="div-grid">${grps.upcoming.map(card).join('')}</div>`;
+    if(grps.paid.length)html+=sh('✅ Already Paid — 2026',grps.paid.length)+`<div class="div-grid">${grps.paid.map(card).join('')}</div>`;
+    gw.innerHTML=html||empty();
+  } else {
+    gw.innerHTML=data.length?`<div class="div-grid" style="margin-top:14px">${data.map(card).join('')}</div>`:empty();
+  }
+
+  // Bind inputs
+  gw.querySelectorAll('.sh-inp').forEach(inp=>{
+    inp.oninput=()=>{
+      const id=inp.dataset.id;const v=parseFloat(inp.value)||0;
+      if(v>0)SH[id]=v;else delete SH[id];
+      saveSH();calcInc(id);updateSummary();
+    };
+    calcInc(inp.dataset.id);
+  });
+
+  updateSummary();
+}
+
+function sh(label,n){
+  return `<div class="sh-row"><div class="sh-line"></div><div class="sh-label">${label}</div><div class="sh-count">${n}</div><div class="sh-line"></div></div>`;
+}
+function empty(){return '<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px">No dividends match the current filter</div>';}
+
+/* ── Income calc ────────────────────────────────────────── */
+function calcInc(id){
+  const d=D.find(x=>x.id===id);if(!d)return;
+  const sh=parseFloat(SH[id])||0;
+  const el=document.getElementById('inc-'+id);
+  if(!el)return;
+  if(sh>0){
+    const inc=sh*d.dps;
+    el.textContent=d.curr==='KES'?K(inc):'RWF '+Math.round(inc).toLocaleString();
+    el.style.color='var(--green)';
+  }else{el.textContent='—';el.style.color='var(--dim)';}
+}
+
+/* ── Summary ────────────────────────────────────────────── */
+function updateSummary(){
+  const upcoming=D.filter(d=>status(d)!=='paid');
+  const eligible=D.filter(d=>parseD(d.ex)<TODAY&&status(d)!=='paid');
+  const next=upcoming.filter(d=>!d.pending).sort((a,b)=>parseD(a.pay)-parseD(b.pay))[0];
+  document.getElementById('s-up').textContent=upcoming.length;
+  document.getElementById('s-ex').textContent=eligible.length;
+  if(next){
+    document.getElementById('s-next').textContent=next.tk;
+    document.getElementById('s-next-d').textContent=fmt(next.pay);
+  }
+  let tot=0,paid_t=0,up_t=0;
+  D.forEach(d=>{
+    const sh=parseFloat(SH[d.id])||0;
+    if(sh>0&&d.curr==='KES'){
+      const inc=sh*d.dps;tot+=inc;
+      if(status(d)==='paid')paid_t+=inc;else up_t+=inc;
+    }
+  });
+  document.getElementById('s-inc').textContent=tot>0?K(tot):'KES 0';
+  document.getElementById('total-inc').textContent=tot>0?K(tot):'KES 0';
+  document.getElementById('total-inc-sub').textContent=tot>0
+    ?`Paid: ${K(paid_t)}  ·  Upcoming: ${K(up_t)}`
+    :'Enter shares on each card to calculate';
+}
+
+function clearAll(){SH={};saveSH();render();toast('All share quantities cleared');}
+
+/* ── Countdown clock ────────────────────────────────────── */
+function tickClock(){
+  const now=new Date();
+  const eat=new Date(now.getTime()+3*3600*1000);
+  const p=n=>String(n).padStart(2,'0');
+  document.getElementById('clock').textContent=`${p(eat.getUTCHours())}:${p(eat.getUTCMinutes())}:${p(eat.getUTCSeconds())} EAT`;
+}
+
+function tickCountdown(){
+  const upcoming=D.filter(d=>!d.pending&&status(d)!=='paid').sort((a,b)=>parseD(a.pay)-parseD(b.pay));
+  if(!upcoming.length)return;
+  const next=upcoming[0];
+  const payAt=parseD(next.pay);payAt.setHours(9,0,0,0); // 9am EAT
+  const diff=payAt-new Date();
+  if(diff<=0){document.getElementById('cd-d').textContent='0';['cd-h','cd-m','cd-s'].forEach(i=>document.getElementById(i).textContent='0');return;}
+  const d=Math.floor(diff/86400000);
+  const h=Math.floor(diff%86400000/3600000);
+  const m=Math.floor(diff%3600000/60000);
+  const s2=Math.floor(diff%60000/1000);
+  document.getElementById('cd-d').textContent=d;
+  document.getElementById('cd-h').textContent=h;
+  document.getElementById('cd-m').textContent=m;
+  document.getElementById('cd-s').textContent=s2;
+  // Banner
+  const exPast=parseD(next.ex)<TODAY;
+  document.getElementById('nb-title').textContent=`Next: ${next.co} ${next.type.toUpperCase()} — ${next.curr} ${next.dps.toFixed(2)}/share · Payment ${fmt(next.pay)}`;
+  document.getElementById('nb-sub').textContent=(exPast?'✓ Ex-date passed — eligible if registered · ':'Buy before '+fmt(next.ex)+' to receive · ')
+    +`Books close ${fmt(next.bc)} · Yield: ${yld(next)} · Declared ${fmt(next.declared)}`;
+}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
+
+/* ── Init ────────────────────────────────────────────────── */
+setInterval(tickClock,1000);
+setInterval(tickCountdown,1000);
+tickClock();tickCountdown();
+render();
+</script>
+</body>
+</html>
