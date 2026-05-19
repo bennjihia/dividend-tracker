@@ -148,7 +148,7 @@ body{font-family:var(--fu);background:var(--cream);color:var(--text);min-height:
     </div>
     <div class="h-meta">
       <div class="h-live"><div class="live-dot"></div><span id="clock">--:--:-- EAT</span></div>
-      <div style="font-size:10px;color:rgba(255,255,255,.35);font-family:var(--fm)" id="h-date">Mon 18 May 2026</div>
+      <div style="font-size:10px;color:rgba(255,255,255,.35);font-family:var(--fm)" id="h-date">Loading...</div>
       <div class="h-note">Source: NSE filings · CDSC · myStocks · Company announcements</div>
       <div class="h-note">Ex-div = Books Close − 2 business days (NSE T+2 settlement)</div>
     </div>
@@ -231,7 +231,9 @@ function fmt(s){
   const d=parseD(s);if(!d)return '—';
   return d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'});
 }
-const TODAY=mkDate(2026,5,18);
+/* Always use the real current date */
+const _n=new Date();
+const TODAY=mkDate(_n.getFullYear(),_n.getMonth()+1,_n.getDate());
 
 /* ════════════════════════════════════════════════════════════
    DATA — NSE Kenya 2026 Dividend Calendar
@@ -488,43 +490,72 @@ function updateSummary(){
 
 function clearAll(){SH={};saveSH();render();toast('All share quantities cleared');}
 
-/* ── Countdown clock ────────────────────────────────────── */
-function tickClock(){
-  const now=new Date();
-  const eat=new Date(now.getTime()+3*3600*1000);
-  const p=n=>String(n).padStart(2,'0');
-  document.getElementById('clock').textContent=`${p(eat.getUTCHours())}:${p(eat.getUTCMinutes())}:${p(eat.getUTCSeconds())} EAT`;
+/* ── Clock & Countdown ──────────────────────────────────── */
+/* Cache next payment once — don't recalculate every second */
+let _nextPayment = null;
+let _nextPayAt   = null;
+
+function initNextBanner(){
+  const upcoming = D.filter(d=>!d.pending && status(d)!=='paid')
+                    .sort((a,b)=>parseD(a.pay)-parseD(b.pay));
+  if(!upcoming.length) return;
+  _nextPayment = upcoming[0];
+  _nextPayAt   = parseD(_nextPayment.pay);
+  _nextPayAt.setHours(9,0,0,0); // 9 am EAT payment opening
+
+  const exPast = parseD(_nextPayment.ex) < TODAY;
+  const el1 = document.getElementById('nb-title');
+  const el2 = document.getElementById('nb-sub');
+  if(el1) el1.textContent =
+    `Next: ${_nextPayment.co} ${_nextPayment.type.toUpperCase()} — `+
+    `${_nextPayment.curr} ${_nextPayment.dps.toFixed(2)}/share · Payment ${fmt(_nextPayment.pay)}`;
+  if(el2) el2.textContent =
+    (exPast ? '✓ Ex-date passed — eligible if registered · '
+             : 'Buy before '+fmt(_nextPayment.ex)+' to receive · ')
+    + `Books close ${fmt(_nextPayment.bc)} · Yield: ${yld(_nextPayment)} · Declared ${fmt(_nextPayment.declared)}`;
 }
 
-function tickCountdown(){
-  const upcoming=D.filter(d=>!d.pending&&status(d)!=='paid').sort((a,b)=>parseD(a.pay)-parseD(b.pay));
-  if(!upcoming.length)return;
-  const next=upcoming[0];
-  const payAt=parseD(next.pay);payAt.setHours(9,0,0,0); // 9am EAT
-  const diff=payAt-new Date();
-  if(diff<=0){document.getElementById('cd-d').textContent='0';['cd-h','cd-m','cd-s'].forEach(i=>document.getElementById(i).textContent='0');return;}
-  const d=Math.floor(diff/86400000);
-  const h=Math.floor(diff%86400000/3600000);
-  const m=Math.floor(diff%3600000/60000);
-  const s2=Math.floor(diff%60000/1000);
-  document.getElementById('cd-d').textContent=d;
-  document.getElementById('cd-h').textContent=h;
-  document.getElementById('cd-m').textContent=m;
-  document.getElementById('cd-s').textContent=s2;
-  // Banner
-  const exPast=parseD(next.ex)<TODAY;
-  document.getElementById('nb-title').textContent=`Next: ${next.co} ${next.type.toUpperCase()} — ${next.curr} ${next.dps.toFixed(2)}/share · Payment ${fmt(next.pay)}`;
-  document.getElementById('nb-sub').textContent=(exPast?'✓ Ex-date passed — eligible if registered · ':'Buy before '+fmt(next.ex)+' to receive · ')
-    +`Books close ${fmt(next.bc)} · Yield: ${yld(next)} · Declared ${fmt(next.declared)}`;
+function tickClock(){
+  const now = new Date();
+  const eat = new Date(now.getTime() + 3*3600*1000);
+  const p   = n => String(n).padStart(2,'0');
+  /* clock */
+  const ck = document.getElementById('clock');
+  if(ck) ck.textContent = `${p(eat.getUTCHours())}:${p(eat.getUTCMinutes())}:${p(eat.getUTCSeconds())} EAT`;
+  /* date label */
+  const days=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const months=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  const dEl = document.getElementById('h-date');
+  if(dEl) dEl.textContent =
+    `${days[eat.getUTCDay()]} ${eat.getUTCDate()} ${months[eat.getUTCMonth()]} ${eat.getUTCFullYear()}`;
+  /* countdown numbers only — no DOM-heavy banner update */
+  if(!_nextPayAt) return;
+  const diff = _nextPayAt - now;
+  if(diff <= 0){
+    ['cd-d','cd-h','cd-m','cd-s'].forEach(id=>{
+      const e=document.getElementById(id); if(e) e.textContent='0';
+    }); return;
+  }
+  const cd = document.getElementById('cd-d');
+  const ch = document.getElementById('cd-h');
+  const cm = document.getElementById('cd-m');
+  const cs = document.getElementById('cd-s');
+  if(cd) cd.textContent = Math.floor(diff/86400000);
+  if(ch) ch.textContent = Math.floor(diff%86400000/3600000);
+  if(cm) cm.textContent = Math.floor(diff%3600000/60000);
+  if(cs) cs.textContent = Math.floor(diff%60000/1000);
 }
+
+/* kept for compatibility — no-op now since banner is set once */
+function tickCountdown(){}
 
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',3000);}
 
 /* ── Init ────────────────────────────────────────────────── */
-setInterval(tickClock,1000);
-setInterval(tickCountdown,1000);
-tickClock();tickCountdown();
-render();
+setInterval(tickClock,1000); /* single interval — clock + countdown in one tick */
+initNextBanner(); /* populate banner immediately — no wait */
+tickClock();       /* start clock */
+render();          /* build cards */
 </script>
 </body>
 </html>
